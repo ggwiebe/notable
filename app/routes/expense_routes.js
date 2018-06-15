@@ -6,12 +6,16 @@ module.exports = function(app, connection) {
 
 	  app.post('/expenses', (req, res) => {
 		    // You'll create your expense here.
-		    console.log(req.body)
-		    res.send('Hello')
+		    console.log(req.body);
+		    res.send('Hello');
 		  });
 
 	  app.post('/expense', (req, res) => {
 		  
+		    console.log("req.headers: ---------------------------------------------");
+		    console.log(req.headers);
+		    console.log("req.body: ---------------------------------------------");
+		    console.log(req.body);
 		    // ///////////////////////////////////////////////////
 		    // validate data before doing anything!!!
 		    // ///////////////////////////////////////////////////
@@ -58,14 +62,21 @@ module.exports = function(app, connection) {
 		    // VALIDATION - END
 		    // ///////////////////////////////////////////////////
 
+
 		    if (typeof dataError !== 'undefined' && dataError !== null) {
 			    // console.log("dataError undefined expression - dataError:" +
 				// dataError + "expression evaluation:" + (dataError !==
 				// 'undefined'));
 			    console.log("User entered bad data: " + dataError);
 		        res.send({ 'error': 'A data error has occurred: ' + dataError }); 	    	
+
 		    } else {
-			    const expense = { 
+
+		    	console.log("User data - validated!");
+		    	console.log("          - floatValue: " + floatValue);
+		    	console.log("          - date: " + dateDate);
+
+		    	const expense = { 
     					type: req.body.type,
     					date: dateDate,
     					category: req.body.category,
@@ -73,7 +84,7 @@ module.exports = function(app, connection) {
     					value: floatValue
     				};
 
-		    	// db.collection('expense').insert(expense, (err, result) => {
+		         // db.collection('expense').insert(expense, (err, result) => {
 			    connection.query('SELECT * from Expense LIMIT 2', function(err, rows, fields) {
 			       connection.end();
 			          if (!err) {
